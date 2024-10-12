@@ -20,6 +20,14 @@ public class FileParsingTest {
         File downloadPdf = $("a[href='junit-user-guide-5.11.2.pdf']").download();
         PDF content = new PDF(downloadPdf);
         assertThat(content.author).contains("Sam Brannen");
-        }
     }
 
+    @Test
+    void xlsParseTest() throws Exception {
+        open("https://junit.org/junit5/docs/current/user-guide/");
+        File downloadPdf = $("a[href='junit-user-guide-5.11.2.pdf']").download();
+        PDF content = new PDF(downloadPdf);
+        assertThat(content.author).contains("Sam Brannen");
+    }
+
+}
