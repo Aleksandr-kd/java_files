@@ -38,7 +38,9 @@ public class SelenideFilesTest {
     void selenideUploadFile() {
         open("https://fineuploader.com/demos.html");
         $("input[type='file']").uploadFromClasspath("cat.jpg");
-        $("div.qq-file-info").shouldHave(Condition.text("cat.jpg"));
+        $("div.qq-file-info").shouldHave(Condition.text("cat.jpg")); // проверка загрузки файла по тексту
+//        $("span.qq-upload-file-selector").shouldHave(Condition.attribute("title", "cat.jpg")); // проверка загрузки файла по тегу
+
     }
 
 }
