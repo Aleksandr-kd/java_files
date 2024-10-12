@@ -1,5 +1,6 @@
 package files;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.FileDownloadMode;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ public class SelenideFilesTest {
     void selenideUploadFile() {
         open("https://fineuploader.com/demos.html");
         $("input[type='file']").uploadFromClasspath("cat.jpg");
-        System.out.println(" ");
+        $("div.qq-file-info").shouldHave(Condition.text("cat.jpg"));
     }
 
 }
