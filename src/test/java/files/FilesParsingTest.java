@@ -2,16 +2,16 @@ package files;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import com.opencsv.CSVReader;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.devtools.v127.input.Input;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.List;
 
-import static com.codeborne.pdftest.assertj.Assertions.assertThat;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class FilesParsingTest {
@@ -31,7 +31,7 @@ public class FilesParsingTest {
 
         try (InputStream resourceAsStream = cl.getResourceAsStream("shkola.xlsx")) {
             XLS content = new XLS(resourceAsStream);
-            System.out.println("");
+            assertThat(content.excel.getSheet("1").getRow(0).getCell(0).getStringCellValue()).isEqualTo("Привет");
 
         }
 
@@ -41,5 +41,19 @@ public class FilesParsingTest {
         PDF content = new PDF(downloadPdf);
         assertThat(content.author).contains("Sam Brannen");
     }
+
+
+    @Test
+    void csvParseTest() throws Exception {
+        try (
+            InputStream resource = cl.getResourceAsStream("qa.csv");
+            CSVReader reader = new CSVReader(new InputStreamReader(resource))
+
+                    ) {
+            List<String[]> content = reader.readAll();
+            assertThat(content.get(0)[1]).contains("lesson");
+            }
+        }
+
 
 }
