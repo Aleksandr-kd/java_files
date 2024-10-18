@@ -8,6 +8,8 @@ import org.openqa.selenium.devtools.v127.input.Input;
 
 import java.io.*;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -46,14 +48,27 @@ public class FilesParsingTest {
     @Test
     void csvParseTest() throws Exception {
         try (
-            InputStream resource = cl.getResourceAsStream("qa.csv");
-            CSVReader reader = new CSVReader(new InputStreamReader(resource))
+                InputStream resource = cl.getResourceAsStream("qa.csv");
+                CSVReader reader = new CSVReader(new InputStreamReader(resource))
 
-                    ) {
+        ) {
             List<String[]> content = reader.readAll();
             assertThat(content.get(0)[1]).contains("lesson");
+        }
+    }
+
+
+    @Test
+    void zipParseTest() throws Exception {
+        try (
+                InputStream resource = cl.getResourceAsStream("fail.zip");
+                ZipInputStream zis = new ZipInputStream(resource)
+
+        ) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                assertThat(entry.getName()).isEqualTo("sample.txt");
             }
         }
-
-
+    }
 }
